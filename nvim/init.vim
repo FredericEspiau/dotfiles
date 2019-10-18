@@ -29,6 +29,8 @@ set backspace=indent,eol,start
 
 set ruler	" show the cursor position all the time
 set showcmd	" display incomplete commands
+set clipboard=unnamed " use system clipboard instead of vim clipboard
+vmap <LeftRelease> "*ygv	" as clipboard=autoselect doesn't work on nvim, use this mapping
 
 " Search
 set incsearch " incremental search
@@ -43,7 +45,8 @@ set synmaxcol=500 " improve performance with long lines
 
 set laststatus=2	" always display status line
 set ruler	" enable ruler (status bar) all the time
-
+set noerrorbells	" no bell on error
+set visualbell	" display a flash in case of error
 " autocompletion
 set wildmenu " Enable menu at bottom of vim
 set wildmode=longest:full,full " autocomplete longest command, then everything
@@ -100,3 +103,16 @@ augroup vimStartup
 		\ | endif
 
 augroup END
+
+ " Prevent that the langmap option applies to characters that result
+ " from a mapping
+ " This may break plugins
+set nolangremap
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from, thus the changes you made.
+" Only define it when not defined already.
+command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+	\ | wincmd p | diffthis
+
+
